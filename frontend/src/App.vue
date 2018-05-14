@@ -4,9 +4,9 @@
       <p class="side-menu-title">
         CGCenter Orders
       </p>
-      <ul>
+      <ul class="list-group">
         <li class="side-menu-list-item-container">
-          <router-link class="side-menu-list-item" to="/">
+          <router-link class="side-menu-list-item" to="suppliers">
             Suppliers
           </router-link>
         </li>
@@ -46,7 +46,7 @@ export default {
 
 .side-menu-title {
   color: #c3c3c3!important;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
   font-size: 1.2em;
 }
 

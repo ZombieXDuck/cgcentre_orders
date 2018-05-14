@@ -1,0 +1,9 @@
+[
+  {
+    "model": "suppliers.Suppliers",
+    "pk": 1,
+    "fields": {
+      "supplierName": "Richgro"
+    }
+  }
+]

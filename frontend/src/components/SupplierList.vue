@@ -1,36 +1,57 @@
 <template>
   <div>
     <h1 class="header">Suppliers</h1>
-    <div v-for="supplier in suppliers" class="item">
-      <!-- router-link to="order.id" -->
+    <div class="item newSupplier" @click="newSupplierClick">
       <p class="item-title">
-        {{supplier.name}}
+          Add a new supplier
+      </p>
+      <div class="item-count">
+        <i class="fa fa-plus-square"></i>
+      </div>
+    </div>
+    <div v-for="supplier in suppliers" class="item" @click="supplierClick" :id="supplier.supplierId">
+      <p class="item-title">
+        {{supplier.supplierName}}
       </p>
       <div class="item-count">
         <span>items: {{supplier.count}}</span>
       </div>
     </div>
+    <div class="item" v-if="suppliers.length === 0">
+      <p>
+        No suppliers exist yet.
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'SupplierList',
   data () {
     return {
-      suppliers: [
-        {
-          name: "Plants Plus",
-          supplierId: 22,
-          count: 22
-        },
-        {
-          name: "Something Else",
-          supplierId: 11,
-          count: 33
-        }
-      ]
+      suppliers: []
     }
+  },
+  methods: {
+    supplierClick(e) {
+      this.$router.push({ name: 'Suppliers', params: {supplierId: e.target.id}});
+    },
+    newSupplierClick() {
+      this.$router.push({ name: 'NewSupplier' });
+    }
+  },
+  created() {
+    var self = this
+    axios.get('http://localhost:8000/suppliers/')
+      .then(function (response) {
+        self.suppliers = response.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 }
 </script>
@@ -49,6 +70,7 @@ export default {
     height: 140px;
     box-shadow: 0 1px 4px rgba(1,1,1,.15);
     margin: 0 0 60px 40px;
+    cursor: pointer;
   }
 
   .item-title {
