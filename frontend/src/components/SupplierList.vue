@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     supplierClick(supplierId) {
-      this.$router.push({ name: 'Suppliers', params: {supplierId: supplierId}});
+      this.$router.push({ name: 'Supplier', params: {supplierId: supplierId}});
     },
     newSupplierClick() {
       this.$router.push({ name: 'NewSupplier' });
