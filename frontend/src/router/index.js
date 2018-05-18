@@ -15,14 +15,14 @@ export default new Router({
       component: SupplierList
     },
     {
-      path: '/suppliers/:supplierId',
-      name: 'Suppliers',
-      component: Supplier
-    },
-    {
       path: '/suppliers/new',
       name: 'NewSupplier',
       component: NewSupplier
+    },
+    {
+      path: '/suppliers/:supplierId',
+      name: 'Suppliers',
+      component: Supplier
     },
     {
       path: '/orders',

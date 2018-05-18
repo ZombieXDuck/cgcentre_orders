@@ -6,24 +6,36 @@
       </p>
       <ul class="list-group">
         <li class="side-menu-list-item-container">
-          <router-link class="side-menu-list-item" to="suppliers">
+          <router-link class="side-menu-list-item" :to="{ name: 'SupplierList' }">
             Suppliers
           </router-link>
         </li>
         <li class="side-menu-list-item-container">
-          <router-link class="side-menu-list-item" to="orders">Orders</router-link>
+          <router-link class="side-menu-list-item" :to="{ name: 'OrderList' }">
+            Orders
+          </router-link>
         </li>
       </ul>
     </aside>
-    <div class="router-view-container">
-      <router-view/>
+    <div class="router-view-container scrollable">
+      <div class="row button-container">
+        <button type="button" @click="back" class="btn">
+          <i class="fa fa-arrow-left"></i> Back
+        </button>
+      </div>
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
+  }
 }
 </script>
 
@@ -66,8 +78,18 @@ export default {
 
 .router-view-container {
   width: 100%;
+  height: 100vh;
   padding-left: 300px;
   padding-top: 44px;
   overflow: auto;
+}
+
+.scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.button-container {
+  margin-left: 50px;  
 }
 </style>

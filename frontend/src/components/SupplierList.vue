@@ -9,7 +9,7 @@
         <i class="fa fa-plus-square"></i>
       </div>
     </div>
-    <div v-for="supplier in suppliers" class="item" @click="supplierClick" :id="supplier.supplierId">
+    <div v-for="supplier in suppliers" class="item" @click="supplierClick(supplier.supplierId)">
       <p class="item-title">
         {{supplier.supplierName}}
       </p>
@@ -36,8 +36,8 @@ export default {
     }
   },
   methods: {
-    supplierClick(e) {
-      this.$router.push({ name: 'Suppliers', params: {supplierId: e.target.id}});
+    supplierClick(supplierId) {
+      this.$router.push({ name: 'Suppliers', params: {supplierId: supplierId}});
     },
     newSupplierClick() {
       this.$router.push({ name: 'NewSupplier' });
