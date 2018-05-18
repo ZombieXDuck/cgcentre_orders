@@ -3,8 +3,8 @@
     <h4 class="header">Supplier: {{supplierName}}</h4>
     <ul class="list-group">
       <li v-for="supplierItem in supplierItems" class="list-group-item">
-        <spam><b>itemCode:</b> {{supplierItem.itemCode}}</spam>
-        <spam><b>itemName:</b> {{supplierItem.itemName}}</spam>
+        <span><b>itemCode:</b> {{supplierItem.itemCode}}</span>
+        <span><b>itemName:</b> {{supplierItem.itemName}}</span>
       </li>
       <li v-if="supplierItems.length === 0" class="list-group-item">
         No items in this supplier exist yet

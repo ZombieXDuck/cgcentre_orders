@@ -4,6 +4,7 @@ import SupplierList from '@/components/SupplierList'
 import OrderList from '@/components/OrderList'
 import Supplier from '@/components/Supplier'
 import NewSupplier from '@/components/NewSupplier'
+import HomePage from '@/components/HomePage'
 
 Vue.use(Router)
 
@@ -21,13 +22,18 @@ export default new Router({
     },
     {
       path: '/suppliers/:supplierId',
-      name: 'Suppliers',
+      name: 'Supplier',
       component: Supplier
     },
     {
       path: '/orders',
       name: 'OrderList',
       component: OrderList
-    }
+    },
+    {
+      path: '/',
+      name: 'HomePage',
+      component: HomePage
+    },
   ]
 })
