@@ -1,23 +1,16 @@
 <template>
   <div>
     <h4 class="header">Supplier: {{supplierName}}</h4>
-    <ul class="list-group">
-      <li v-for="supplierItem in supplierItems" class="list-group-item">
-        <span><b>itemCode:</b> {{supplierItem.itemCode}}</span>
-        <span><b>itemName:</b> {{supplierItem.itemName}}</span>
-      </li>
-      <li v-if="supplierItems.length === 0" class="list-group-item">
-        No items in this supplier exist yet
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import SupplierForm from './SupplierForm'
 
   export default {
     name: 'Supplier',
+    components: [SupplierForm],
     data() {
       return {
         supplierName: '',
@@ -36,9 +29,21 @@
         .catch(function(error) {
           console.log(error)
         })
+    },
+    methods: {
+      addNewItem() {
+        this.supplierItems.push({itemName: '', itemCode: ''})
+      },
+      removeItem(itemIndex) {
+        this.supplierItems.splice(itemIndex, 1);
+      }
     }
   }
 </script>
 
 <style scoped>
+  .border-bottom {
+    padding-bottom: 15px;
+    border-bottom: 3px solid grey;
+  }
 </style>
