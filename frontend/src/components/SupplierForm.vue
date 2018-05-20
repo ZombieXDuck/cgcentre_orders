@@ -1,7 +1,26 @@
 <template>
   <div>
-    <ul class="list-group">
-      <li v-for="supplierItem in supplierItems" class="row border-bottom">
+    <form name="newSupplierForm" @submit.prevent="">
+      <!-- supplier name -->
+      <div class="form-group border-bottom">
+        <label>Supplier Name</label>
+        <input type="text" name="supplierName" class="form-control" placeholder="Enter Supplier's Name"
+          v-model="supplier.supplierName"
+          v-validate="'required'"
+          :class="{'error': errors.has('supplierName')}"
+        />
+        <span class="form-text text-danger" v-if="errors.has('supplierName')">
+            A supplier name is required
+        </span>
+      </div>
+      <!-- end of supplier name -->
+      <!-- supplier items -->
+      <p>Supplier Items</p>
+      <div class="row border-bottom"
+        v-for="(supplierItem, index) in supplier.supplierItems"
+        @keyup.enter="addItem"
+        :key="supplierItem.id"
+      >
         <!-- item code -->
         <div class="col-sm">
           <label>Item Code:</label>
@@ -34,42 +53,90 @@
         </div>
         <!-- delete button -->
         <div class="col-sm">
-          <button type="button" class="btn btn-danger" @click="removeItem(supplierItem.index)">
+          <button type="button" class="btn btn-danger" @click="removeItem(index)">
             <i class="fa fa-trash"></i>
           </button>
         </div>
-      </li>
-      <li class="list-group-item">
-        <button type="button" class="btn" @click="addNewItem">
-          Add a new item
+      </div>
+      <div class="btn-container">
+        <button type="button" class="btn" name="button" @click="addSupplierItem">
+          Add New Item
         </button>
-      </li>
-      <li v-if="supplierItems.length === 0" class="list-group-item">
-        No items in this supplier exist yet
-      </li>
-    </ul>
+      </div>
+      <!-- end of supplier items -->
+      <!-- submit button -->
+      <div class="btn-container--submit">
+        <button type="button" class="btn btn-primary" name="button" style="float:right!important"
+          @click="showSubmitModal"
+          :disabled="errors.any()"
+        >
+          Submit Supplier
+        </button>
+      </div>
+      <!-- end of submit button -->
+    </form>
+
+    <RemoveModal :itemName="'supplier item'" :modalId="'removeModal'"></RemoveModal>
+    <SubmitModal :formName="'supplier'" :modalId="'submitModal'"></SubmitModal>
   </div>
 </template>
 
 <script>
+  import RemoveModal from './RemoveModal'
+  import SubmitModal from './SubmitModal'
+  import EventBus from '../EventBus'
+  import $ from 'jquery'
+  import Vue from 'vue'
+  import VeeValidate from 'vee-validate'
   import axios from 'axios'
+  import {mapGetters, mapActions} from 'vuex';
 
+  Vue.use(VeeValidate)
   export default {
-    name: 'SupplierForm',
+    name: 'NewSupplier',
+    components: {
+      'RemoveModal': RemoveModal,
+      'SubmitModal': SubmitModal
+    },
     data() {
       return {
-        supplierName: '',
-        supplierItems: [],
-        supplierId: ''
+        id: 0,
+        indexToBeRemoved: ''
       }
     },
+    computed: {
+      ...mapGetters(['supplier'])
+    },
     methods: {
-      addNewItem() {
-        this.supplierItems.push({itemName: '', itemCode: ''})
-      },
+      ...mapActions(['addSupplierItem', 'removeSupplierItem', 'submitSupplier']),
       removeItem(itemIndex) {
-        this.supplierItems.splice(itemIndex, 1);
+        this.indexToBeRemoved = itemIndex;
+        $("#removeModal").modal('show');
+      },
+      showSubmitModal() {
+        $("#submitModal").modal('show')
+      },
+      validateForm() {
+        this.$validator.validate().then(valid => {
+          valid ? this.submitForm() : ''
+        });
+      },
+      submitForm() {
+        this.submitSupplier({type: 'new'})
       }
+    },
+    created() {
+      var self = this
+      EventBus.$on('closeRemoveModal', function(remove) {
+        $("#removeModal").modal('hide')
+        remove ? self.removeSupplierItem({index: self.indexToBeRemoved}) : ''
+        self.indexToBeRemoved = '';
+      })
+
+      EventBus.$on('closeSubmitModal', function(submit) {
+        $("#submitModal").modal('hide')
+        submit ? self.validateForm() : "";
+      })
     }
   }
 </script>
@@ -78,5 +145,17 @@
   .border-bottom {
     padding-bottom: 15px;
     border-bottom: 3px solid grey;
+  }
+
+  .btn-container {
+    margin-top: 10px;
+  }
+
+  .btn-container--submit {
+    margin-top: 33px
+  }
+
+  .error {
+    border: 1px solid red;
   }
 </style>

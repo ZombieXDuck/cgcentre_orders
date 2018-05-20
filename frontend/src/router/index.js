@@ -23,6 +23,7 @@ export default new Router({
     {
       path: '/suppliers/:supplierId',
       name: 'Supplier',
+      props: true,
       component: Supplier
     },
     {
