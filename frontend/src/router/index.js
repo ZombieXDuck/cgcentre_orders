@@ -13,6 +13,7 @@ export default new Router({
     {
       path: '/suppliers',
       name: 'SupplierList',
+      props: true,
       component: SupplierList
     },
     {
@@ -23,6 +24,7 @@ export default new Router({
     {
       path: '/suppliers/:supplierId',
       name: 'Supplier',
+      props: true,
       component: Supplier
     },
     {

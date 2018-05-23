@@ -2,7 +2,9 @@
   <div id="app">
     <aside class="side-menu">
       <p class="side-menu-title">
-        CGCenter Orders
+        <router-link class="side-menu-list-item" :to="{ name: 'HomePage' }">
+          CGCentre Orders
+        </router-link>
       </p>
       <ul class="list-group">
         <li class="side-menu-list-item-container">
@@ -90,6 +92,6 @@ export default {
 }
 
 .button-container {
-  margin-left: 50px;  
+  margin-left: 50px;
 }
 </style>
