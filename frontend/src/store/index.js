@@ -20,6 +20,9 @@ const mutations = {
   },
   UPDATE_SUPPLIER (state, payload) {
     state.supplier = payload;
+  },
+  CLEAR_SUPPLIER (state) {
+    state.supplier = {supplierName: [], supplierName: ''};
   }
 }
 
@@ -41,14 +44,28 @@ const actions = {
       })
   },
   clearSupplier ({commit}) {
-      commit('UPDATE_SUPPLIER', {supplierItems: [], supplierName: ''})
+      commit('CLEAR_SUPPLIER')
   },
   submitSupplier ({commit, state}, payload) {
     if (payload.type === "new") {
-      axios.post('http://localhost:8000/suppliers/', {supplierName: state.supplierName, supplierItems: state.supplierItems})
+      axios.post('http://localhost:8000/suppliers/',
+        {
+          supplierName: state.supplier.supplierName,
+          supplierItems: state.supplier.supplierItems
+        }
+      )
         .then(function(response) {
-          console.log(response);
-          //self.$router.push({ name: 'SupplierList', props: {created: true} });
+          console.log('submitSupplier response')
+          console.log(response)
+          payload.router.push(
+            {
+              name: 'SupplierList',
+              params: {
+                newSupplierId: response.data.supplierId,
+                newSupplierName: state.supplier.supplierName
+              }
+            });
+            commit('CLEAR_SUPPLIER')
         })
         .catch(function(err) {
           console.log(err)

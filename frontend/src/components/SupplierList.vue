@@ -1,5 +1,17 @@
 <template>
   <div>
+    <!-- created supplier alert -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="newSupplierId">
+      Supplier
+      <router-link :to="{ name: 'Supplier', params: {supplierId: newSupplierId} }">
+        {{newSupplierName}}
+      </router-link>
+      has been created.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- end of created supplier alert -->
     <h1 class="header">Suppliers</h1>
     <div class="item newSupplier" @click="newSupplierClick">
       <p class="item-title">
@@ -35,6 +47,7 @@ export default {
       suppliers: []
     }
   },
+  props: ['newSupplierId', 'newSupplierName'],
   methods: {
     supplierClick(supplierId) {
       this.$router.push({ name: 'Supplier', params: {supplierId: supplierId}});
@@ -44,6 +57,8 @@ export default {
     }
   },
   created() {
+    console.log('createdPopUp')
+    console.log(this.createdPopUp)
     var self = this
     axios.get('http://localhost:8000/suppliers/')
       .then(function (response) {

@@ -122,7 +122,7 @@
         });
       },
       submitForm() {
-        this.submitSupplier({type: 'new'})
+        this.submitSupplier({type: 'new', router: this.$router})
       }
     },
     created() {
