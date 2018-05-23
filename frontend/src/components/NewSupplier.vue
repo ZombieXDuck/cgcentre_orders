@@ -14,6 +14,12 @@
     name: 'NewSupplier',
     components: {
       'SupplierForm': SupplierForm
+    },
+    methods: {
+      ...mapActions(['clearSupplier'])
+    },
+    created() {
+      this.clearSupplier();
     }
   }
 </script>
