@@ -13,6 +13,16 @@
     </div>
     <!-- end of created supplier alert -->
     <h1 class="header">Suppliers</h1>
+    <!-- search suppliers -->
+    <div class="input-group p-4">
+      <input type="text" class="form-control" placeholder="Search Suppliers" v-model="supplierSearch">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="button" @click="clearSupplierSearch">
+          Clear
+        </button>
+      </div>
+    </div>
+    <!-- end of search suppliers -->
     <div class="item newSupplier" @click="newSupplierClick">
       <p class="item-title">
           Add a new supplier
@@ -21,7 +31,7 @@
         <i class="fa fa-plus-square"></i>
       </div>
     </div>
-    <div v-for="supplier in suppliers" class="item" @click="supplierClick(supplier.supplierId)">
+    <div v-for="supplier in filteredSuppliers" class="item" @click="supplierClick(supplier.supplierId)">
       <p class="item-title">
         {{supplier.supplierName}}
       </p>
@@ -44,21 +54,33 @@ export default {
   name: 'SupplierList',
   data () {
     return {
-      suppliers: []
+      suppliers: [],
+      supplierSearch: ''
     }
   },
   props: ['newSupplierId', 'newSupplierName'],
+  computed: {
+      filteredSuppliers: function() {
+        const supplierSearch = this.supplierSearch.toLowerCase();
+        return this.suppliers.filter(function (el) {
+          return (
+            supplierSearch === el.supplierName.toLowerCase().substring(0, supplierSearch.length)
+          )
+        })
+      }
+  },
   methods: {
     supplierClick(supplierId) {
       this.$router.push({ name: 'Supplier', params: {supplierId: supplierId}});
     },
     newSupplierClick() {
       this.$router.push({ name: 'NewSupplier' });
+    },
+    clearSupplierSearch() {
+      this.supplierSearch = '';
     }
   },
   created() {
-    console.log('createdPopUp')
-    console.log(this.createdPopUp)
     var self = this
     axios.get('http://localhost:8000/suppliers/')
       .then(function (response) {
@@ -76,6 +98,11 @@ export default {
     font-size: 2em;
     font-weight: bold;
     padding-bottom: 30px;
+  }
+
+  .supplier-search-container {
+    padding: 0 40px;
+    margin: 25px 0;
   }
 
   .item {
