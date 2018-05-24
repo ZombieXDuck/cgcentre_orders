@@ -8,7 +8,8 @@ const state = {
   supplier: {
     supplierItems: [],
     supplierName: ''
-  }
+  },
+  suppliers: []
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   CLEAR_SUPPLIER (state) {
     state.supplier = {supplierName: [], supplierName: ''};
+  },
+  UPDATE_SUPPLIERS (state, payload) {
+    state.suppliers = payload;
   }
 }
 
@@ -31,7 +35,6 @@ const actions = {
     commit('ADD_SUPPLIER_ITEM');
   },
   removeSupplierItem ({commit}, payload) {
-    console.log(payload)
     commit('REMOVE_SUPPLIER_ITEM', {index: payload.index});
   },
   getSupplier ({ commit }, payload) {
@@ -40,6 +43,15 @@ const actions = {
         commit('UPDATE_SUPPLIER', response.data);
       })
       .catch(function(error) {
+        console.log(error)
+      })
+  },
+  getSuppliers ({ commit}, payload) {
+    axios.get('http://localhost:8000/suppliers/')
+      .then(function (response) {
+        commit('UPDATE_SUPPLIERS', response.data)
+      })
+      .catch(function (error) {
         console.log(error)
       })
   },
@@ -55,8 +67,6 @@ const actions = {
         }
       )
         .then(function(response) {
-          console.log('submitSupplier response')
-          console.log(response)
           payload.router.push(
             {
               name: 'SupplierList',
@@ -70,15 +80,13 @@ const actions = {
         .catch(function(err) {
           console.log(err)
         })
-    } else {
-      console.log('incorrect type: ' + payload)
-      //post to suppliers/<supplierId:int>
     }
   }
 }
 
 const getters = {
-  supplier: state => state.supplier
+  supplier: state => state.supplier,
+  suppliers: state => state.suppliers
 }
 
 export default new Vuex.Store({

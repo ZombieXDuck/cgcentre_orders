@@ -49,27 +49,29 @@
 
 <script>
 import axios from 'axios'
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'SupplierList',
   data () {
     return {
-      suppliers: [],
       supplierSearch: ''
     }
   },
   props: ['newSupplierId', 'newSupplierName'],
   computed: {
-      filteredSuppliers: function() {
-        const supplierSearch = this.supplierSearch.toLowerCase();
-        return this.suppliers.filter(function (el) {
-          return (
-            supplierSearch === el.supplierName.toLowerCase().substring(0, supplierSearch.length)
-          )
-        })
-      }
+    ...mapGetters(['suppliers']),
+    filteredSuppliers: function() {
+      const supplierSearch = this.supplierSearch.toLowerCase();
+      return this.suppliers.filter(function (el) {
+        return (
+          supplierSearch === el.supplierName.toLowerCase().substring(0, supplierSearch.length)
+        )
+      })
+    }
   },
   methods: {
+    ...mapActions(['getSuppliers']),
     supplierClick(supplierId) {
       this.$router.push({ name: 'Supplier', params: {supplierId: supplierId}});
     },
@@ -81,14 +83,7 @@ export default {
     }
   },
   created() {
-    var self = this
-    axios.get('http://localhost:8000/suppliers/')
-      .then(function (response) {
-        self.suppliers = response.data
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    this.getSuppliers();
   }
 }
 </script>
