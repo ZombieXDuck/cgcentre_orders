@@ -21,13 +21,13 @@ class SupplierList(APIView):
         supplierSerializer = SupplierSerializer(data=request.data)
         if supplierSerializer.is_valid():
             supplier = supplierSerializer.save()
-            for item in request.data['supplierItems']: item['supplierId'] = supplier.supplierId
-            supplierItemSerializer = SupplierItemSerializer(data=request.data['supplierItems'], many=True)
-            if supplierItemSerializer.is_valid():
-                supplierItemSerializer.save()
-                return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)
-            return Response(supplierItemSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # for item in request.data['supplierItems']: item['supplierId'] = supplier.supplierId
+            # supplierItemSerializer = SupplierItemSerializer(data=request.data['supplierItems'], many=True)
+            # if supplierItemSerializer.is_valid():
+                # supplierItemSerializer.save()
+            return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)
+            # return Response(supplierItemSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SupplierItemList(APIView):
     """
