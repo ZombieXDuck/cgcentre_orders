@@ -27,7 +27,7 @@ class SupplierList(APIView):
                 # supplierItemSerializer.save()
             return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)
             # return Response(supplierItemSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SupplierItemList(APIView):
     """
