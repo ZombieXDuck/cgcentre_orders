@@ -18,9 +18,9 @@
       <p>Supplier Items</p>
       <div class="row border-bottom"
         v-for="(supplierItem, index) in supplier.supplierItems"
-        @keyup.enter="addItem"
         :key="supplierItem.id"
       >
+        <!-- @keyup.enter="addItem" -->
         <!-- item code -->
         <div class="col-sm">
           <label>Item Code:</label>
@@ -104,6 +104,7 @@
         indexToBeRemoved: ''
       }
     },
+    props: ['supplierId'],
     computed: {
       ...mapGetters(['supplier'])
     },
@@ -114,6 +115,7 @@
         $("#removeModal").modal('show');
       },
       showSubmitModal() {
+        console.log(this.supplier.supplierItems);
         $("#submitModal").modal('show')
       },
       validateForm() {
@@ -122,7 +124,7 @@
         });
       },
       submitForm() {
-        this.submitSupplier({type: 'new', router: this.$router})
+        this.submitSupplier({supplierId: this.supplierId, router: this.$router})
       }
     },
     created() {

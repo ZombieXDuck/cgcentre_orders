@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>Supplier</h4>
-    <SupplierForm></SupplierForm>
+    <SupplierForm :supplierId="this.supplierId"></SupplierForm>
   </div>
 </template>
 

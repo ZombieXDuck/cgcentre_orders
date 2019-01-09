@@ -6,9 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-class SupplierList(APIView):
+class SuppliersView(APIView):
     """
-    Return all suppliers
+    Return all supplier names and ids
     """
     def get(self, request, format=None):
         suppliers = Suppliers.objects.all()
@@ -20,16 +20,11 @@ class SupplierList(APIView):
     def post(self, request, format=None):
         supplierSerializer = SupplierSerializer(data=request.data)
         if supplierSerializer.is_valid():
-            supplier = supplierSerializer.save()
-            # for item in request.data['supplierItems']: item['supplierId'] = supplier.supplierId
-            # supplierItemSerializer = SupplierItemSerializer(data=request.data['supplierItems'], many=True)
-            # if supplierItemSerializer.is_valid():
-                # supplierItemSerializer.save()
+            supplierSerializer.save()
             return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)
-            # return Response(supplierItemSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class SupplierItemList(APIView):
+class SupplierView(APIView):
     """
     Return the name and items of a supplierId
     """
@@ -46,13 +41,13 @@ class SupplierItemList(APIView):
             'supplierItems': supplierItemSerializer.data,
         })
     """
-    Add supplier items to a list belonging to a supplierId
+    Update the name and items of a supplierId
     """
-    """
-    def post(self, request, format=None):
-        serializer = PersonSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    """
+    def post(self, request, supplierId, format=None):
+        supplier = get_object_or_404(Suppliers, pk=supplierId)
+        supplierSerializer = SupplierSerializer(supplier, data=request.data)
+        # need to update supplier items
+        if supplierSerializer.is_valid():
+            supplierSerializer.save()
+            return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)
+        return Response(supplierSerializer.errors, status=status.HTTP_400_BAD_REQUEST)

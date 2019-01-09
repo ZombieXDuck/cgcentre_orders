@@ -4,8 +4,8 @@ from suppliers import views
 
 app_name = 'suppliers'
 urlpatterns = [
-    path('', views.SupplierList.as_view()),
-    path('<int:supplierId>', views.SupplierItemList.as_view())
+    path('', views.SuppliersView.as_view()),
+    path('<int:supplierId>', views.SupplierView.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

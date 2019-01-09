@@ -23,7 +23,7 @@ const mutations = {
     state.supplier = payload;
   },
   CLEAR_SUPPLIER (state) {
-    state.supplier = {supplierName: [], supplierName: ''};
+    state.supplier = {supplierItems: [], supplierName: ''};
   },
   UPDATE_SUPPLIERS (state, payload) {
     state.suppliers = payload;
@@ -40,6 +40,7 @@ const actions = {
   getSupplier ({ commit }, payload) {
     axios.get('http://localhost:8000/suppliers/' + payload.supplierId)
       .then(function(response) {
+        console.log(response)
         commit('UPDATE_SUPPLIER', response.data);
       })
       .catch(function(error) {
@@ -59,14 +60,13 @@ const actions = {
       commit('CLEAR_SUPPLIER')
   },
   submitSupplier ({commit, state}, payload) {
-    if (payload.type === "new") {
+    if (!payload.supplierId) {
       axios.post('http://localhost:8000/suppliers/',
         {
           supplierName: state.supplier.supplierName,
           supplierItems: state.supplier.supplierItems
         }
-      )
-        .then(function(response) {
+      ).then(function(response) {
           payload.router.push(
             {
               name: 'SupplierList',
@@ -75,6 +75,19 @@ const actions = {
                 newSupplierName: state.supplier.supplierName
               }
             });
+            commit('CLEAR_SUPPLIER')
+        })
+        .catch(function(err) {
+          console.log(err)
+        })
+    } else {
+      axios.post('http://localhost:8000/suppliers/' + payload.supplierId,
+        {
+          supplierName: state.supplier.supplierName,
+          supplierItems: state.supplier.supplierItems
+        }
+      ).then(function(response) {
+            console.log('changed name!');
             commit('CLEAR_SUPPLIER')
         })
         .catch(function(err) {
