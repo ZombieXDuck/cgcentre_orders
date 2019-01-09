@@ -82,9 +82,9 @@
 </template>
 
 <script>
-  import RemoveModal from './RemoveModal'
-  import SubmitModal from './SubmitModal'
-  import EventBus from '../EventBus'
+  import RemoveModal from '../common/RemoveModal'
+  import SubmitModal from '../common/SubmitModal'
+  import EventBus from '@/EventBus'
   import $ from 'jquery'
   import Vue from 'vue'
   import VeeValidate from 'vee-validate'
@@ -94,20 +94,25 @@
   Vue.use(VeeValidate)
   export default {
     name: 'NewSupplier',
+
     components: {
       'RemoveModal': RemoveModal,
       'SubmitModal': SubmitModal
     },
+
+    props: ['supplierId'],
+
     data() {
       return {
         id: 0,
         indexToBeRemoved: ''
       }
     },
-    props: ['supplierId'],
+
     computed: {
       ...mapGetters(['supplier'])
     },
+
     methods: {
       ...mapActions(['addSupplierItem', 'removeSupplierItem', 'submitSupplier']),
       removeItem(itemIndex) {
@@ -127,6 +132,7 @@
         this.submitSupplier({supplierId: this.supplierId, router: this.$router})
       }
     },
+    
     created() {
       var self = this
       EventBus.$on('closeRemoveModal', function(remove) {

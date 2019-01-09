@@ -31,7 +31,7 @@
         <i class="fa fa-plus-square"></i>
       </div>
     </div>
-    <div v-for="supplier in filteredSuppliers" class="item" @click="supplierClick(supplier.supplierId)">
+    <div v-for="supplier in filteredSuppliers" class="item" @click="supplierClick(supplier.id)" :key="supplier.id">
       <p class="item-title">
         {{supplier.supplierName}}
       </p>

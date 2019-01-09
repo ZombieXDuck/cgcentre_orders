@@ -11,7 +11,7 @@ class SupplierSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Suppliers
-        fields = ('supplier_name', 'supplier_items')
+        fields = ('id', 'supplier_name', 'supplier_items')
         
     def create(self, validated_data):
         supplier_items_data = validated_data.pop('supplier_items')

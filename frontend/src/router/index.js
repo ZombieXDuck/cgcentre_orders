@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SupplierList from '@/components/SupplierList'
-import OrderList from '@/components/OrderList'
-import Supplier from '@/components/Supplier'
-import NewSupplier from '@/components/NewSupplier'
-import HomePage from '@/components/HomePage'
+import SupplierList from '@/components/suppliers/SupplierList'
+import OrderList from '@/components/orders/OrderList'
+import Supplier from '@/components/suppliers/Supplier'
+import NewSupplier from '@/components/suppliers/NewSupplier'
+import HomePage from '@/components/common/HomePage'
 
 Vue.use(Router)
 

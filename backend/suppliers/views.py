@@ -14,6 +14,7 @@ class SuppliersView(APIView):
         suppliers = Suppliers.objects.all()
         serializer = SupplierSerializer(suppliers, many=True)
         return Response(serializer.data)
+
     """
     Create a supplier along with initial items
     """
@@ -26,22 +27,15 @@ class SuppliersView(APIView):
 
 class SupplierView(APIView):
     """
-    Return the name and items of a supplierId
+    Return the name and items of a supplier
     """
     def get(self, request, supplierId, format=None):
-        #get supplier
         supplier = get_object_or_404(Suppliers, pk=supplierId)
         supplierSerializer = SupplierSerializer(supplier)
-        #get supplier items
-        supplierItems = SupplierItems.objects.filter(supplierId=supplierId)
-        supplierItemSerializer = SupplierItemSerializer(supplierItems, many=True)
-        #return suplier name and supplier items
-        return Response({
-            'supplierName': supplierSerializer.data['supplierName'],
-            'supplierItems': supplierItemSerializer.data,
-        })
+        return Response(supplierSerializer.data, status=status.HTTP_200_OK)
+        
     """
-    Update the name and items of a supplierId
+    Update the name and items of a supplier
     """
     def post(self, request, supplierId, format=None):
         supplier = get_object_or_404(Suppliers, pk=supplierId)

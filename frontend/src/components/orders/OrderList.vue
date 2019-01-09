@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="header">Orders</h1>
-    <div v-for="order in orders" class="item">
+    <div v-for="order in orders" class="item" :key="order.orderId">
       <!-- router-link to="order.id" -->
       <p class="item-title">
         {{order.name}}

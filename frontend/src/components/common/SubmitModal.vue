@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" :id="modalId" tabindex="-1" role="dialog" aria-labelledby="removeItemModal" aria-hidden="true">
+    <div class="modal fade" :id="modalId" tabindex="-1" role="dialog" aria-labelledby="submitModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -9,11 +9,11 @@
             </button>
           </div>
           <div class="modal-body">
-            Are you sure you want to remove this {{ itemName }}?
+            Are you sure you want to submit this {{formName}}?
           </div>
           <div class="modal-footer">
-            <button type="button" @click="closeModal(false)" class="btn btn-default">No</button>
-            <button type="button" @click="closeModal(true)" class="btn btn-danger">Yes</button>
+            <button type="button" @click="closeModal(false)" class="btn btn-default">Cancel</button>
+            <button type="button" @click="closeModal(true)" class="btn btn-primary">Submit</button>
           </div>
         </div>
       </div>
@@ -22,14 +22,14 @@
 </template>
 
 <script>
-  import EventBus from '../EventBus'
+  import EventBus from '@/EventBus'
 
   export default {
-    name: 'RemoveModal',
-    props: ['itemName', 'modalId'],
+    name: 'SubmitModal',
+    props: ['formName', 'modalId'],
     methods: {
       closeModal(remove) {
-        EventBus.$emit('closeRemoveModal', remove);
+        EventBus.$emit('closeSubmitModal', remove);
       }
     }
   }
