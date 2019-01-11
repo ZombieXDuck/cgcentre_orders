@@ -40,7 +40,6 @@ class SupplierView(APIView):
     def post(self, request, supplierId, format=None):
         supplier = get_object_or_404(Suppliers, pk=supplierId)
         supplierSerializer = SupplierSerializer(supplier, data=request.data)
-        # need to update supplier items
         if supplierSerializer.is_valid():
             supplierSerializer.save()
             return Response(supplierSerializer.data, status=status.HTTP_201_CREATED)

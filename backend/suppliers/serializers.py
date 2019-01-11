@@ -19,3 +19,8 @@ class SupplierSerializer(serializers.ModelSerializer):
         for supplier_item_data in supplier_items_data:
             SupplierItems.objects.create(supplier=supplier, **supplier_item_data)
         return supplier
+
+    def update(self, instance, validated_data):
+        instance.supplier_name = validated_data.get('supplier_name', instance.supplier_name)
+        instance.save()
+        return instance
