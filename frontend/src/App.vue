@@ -20,12 +20,14 @@
       </ul>
     </aside>
     <div class="router-view-container scrollable">
-      <div class="row button-container">
-        <button type="button" @click="back" class="btn">
-          <i class="fa fa-arrow-left"></i> Back
-        </button>
+      <div class="container">
+        <div class="row button-container">
+          <button type="button" @click="back" class="btn">
+            <i class="fa fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <router-view />
       </div>
-      <router-view />
     </div>
   </div>
 </template>
