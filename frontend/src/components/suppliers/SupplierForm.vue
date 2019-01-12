@@ -53,7 +53,7 @@
         </div>
         <!-- delete button -->
         <div class="col-sm">
-          <button type="button" class="btn btn-danger" @click="removeItem(index)">
+          <button type="button" class="btn btn-danger" @click="handleRemoveModalClick(index)">
             <i class="fa fa-trash"></i>
           </button>
         </div>
@@ -67,7 +67,7 @@
       <!-- submit button -->
       <div class="btn-container--submit">
         <button type="button" class="btn btn-primary" name="button" style="float:right!important"
-          @click="showSubmitModal"
+          @click="showSubmitModal = true"
           :disabled="errors.any()"
         >
           Submit Supplier
@@ -76,15 +76,13 @@
       <!-- end of submit button -->
     </form>
 
-    <RemoveModal :itemName="'supplier item'" :modalId="'removeModal'"></RemoveModal>
-    <SubmitModal :formName="'supplier'" :modalId="'submitModal'"></SubmitModal>
+    <VueModal v-if="showRemoveModal" @close="handleRemoveModalClose($event)"></VueModal>
+    <VueModal v-if="showSubmitModal" @close="handleSubmitModalClose($event)"></VueModal>
   </div>
 </template>
 
 <script>
-  import RemoveModal from '../common/RemoveModal'
-  import SubmitModal from '../common/SubmitModal'
-  import EventBus from '@/EventBus'
+  import VueModal from '@/components/common/VueModal'
   import $ from 'jquery'
   import Vue from 'vue'
   import VeeValidate from 'vee-validate'
@@ -96,8 +94,7 @@
     name: 'NewSupplier',
 
     components: {
-      'RemoveModal': RemoveModal,
-      'SubmitModal': SubmitModal
+      'VueModal': VueModal
     },
 
     props: ['supplierId'],
@@ -105,7 +102,9 @@
     data() {
       return {
         id: 0,
-        indexToBeRemoved: ''
+        indexToBeRemoved: '',
+        showRemoveModal: false,
+        showSubmitModal: false
       }
     },
 
@@ -114,37 +113,35 @@
     },
 
     methods: {
-      ...mapActions(['addSupplierItem', 'removeSupplierItem', 'submitSupplier']),
-      removeItem(itemIndex) {
+      ...mapActions(
+        [
+          'addSupplierItem', 
+          'removeSupplierItem', 
+          'submitSupplier'
+        ]
+      ),
+      handleRemoveModalClick(itemIndex) {
         this.indexToBeRemoved = itemIndex;
-        $("#removeModal").modal('show');
+        this.showRemoveModal = true;
       },
-      showSubmitModal() {
-        console.log(this.supplier.supplierItems);
-        $("#submitModal").modal('show')
+      handleRemoveModalClose(remove) {
+        this.showRemoveModal = false;
+        remove ? this.removeSupplierItem({index: this.indexToBeRemoved}) : ''
       },
-      validateForm() {
-        this.$validator.validate().then(valid => {
-          valid ? this.submitForm() : ''
-        });
+      handleSubmitModalClose(submit) {
+        this.showSubmitModal = false;
+        submit ? this.submitForm() : ''
       },
       submitForm() {
-        this.submitSupplier({supplierId: this.supplierId, router: this.$router})
+        this.validateForm().then(formIsValid => {
+          if (formIsValid) {
+            this.submitSupplier({supplierId: this.supplierId, router: this.$router})
+          }
+        })  
+      },
+      validateForm() {
+        return this.$validator.validate().then(valid => { valid });
       }
-    },
-    
-    created() {
-      var self = this
-      EventBus.$on('closeRemoveModal', function(remove) {
-        $("#removeModal").modal('hide')
-        remove ? self.removeSupplierItem({index: self.indexToBeRemoved}) : ''
-        self.indexToBeRemoved = '';
-      })
-
-      EventBus.$on('closeSubmitModal', function(submit) {
-        $("#submitModal").modal('hide')
-        submit ? self.validateForm() : "";
-      })
     }
   }
 </script>

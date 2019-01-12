@@ -22,5 +22,10 @@ class SupplierSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.supplier_name = validated_data.get('supplier_name', instance.supplier_name)
+        supplier_items_data = validated_data.pop('supplier_items')
+        for supplier_item_data in supplier_items_data:
+            supplier_item = SupplierItems.objects.get(pk=supplier_item_data)
+            supplier_item.item_code = supplier_item_data.item_code
+            supplier_item.item_name = supplier_item_data.item_name
         instance.save()
         return instance
