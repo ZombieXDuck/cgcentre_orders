@@ -140,7 +140,7 @@
         })  
       },
       validateForm() {
-        return this.$validator.validate().then(valid => { valid });
+        return this.$validator.validate().then(valid => valid );
       }
     }
   }
