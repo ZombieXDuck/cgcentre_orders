@@ -126,7 +126,7 @@
       },
       handleRemoveModalClose(remove) {
         this.showRemoveModal = false;
-        remove ? this.removeSupplierItem({index: this.indexToBeRemoved}) : ''
+        remove ? this.removeSupplierItem({ this.indexToBeRemoved }) : ''
       },
       handleSubmitModalClose(submit) {
         this.showSubmitModal = false;
