@@ -90,8 +90,9 @@
   import {mapGetters, mapActions} from 'vuex';
 
   Vue.use(VeeValidate)
+  
   export default {
-    name: 'NewSupplier',
+    name: 'SupplierForm',
 
     components: {
       'VueModal': VueModal
